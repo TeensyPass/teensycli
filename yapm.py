@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from json import loads
+from json import loads, dumps
 from getpass import getpass
 from os import environ
 from gnupg import GPG
@@ -39,17 +39,6 @@ def get_env_vars():
         print('Environment variables not properly set: {0}'.format(e))
         exit()
 
-
-def get_passes(gpg_home, pass_loc):
-    gpg = GPG(gnupghome=gpg_home)
-    with open(pass_loc, mode='rb') as f:
-        decoded = gpg.decrypt_file(f, passphrase=getpass())
-    if decoded.data == b'':
-        print("Incorrect Passphrase")
-        exit()
-    return loads(clean_gpg_json(decoded.data))
-
-
 if __name__ == '__main__':
     get_env_vars()
     parser = argparse.ArgumentParser(description=DESCR, epilog=EPILOG)
@@ -57,9 +46,18 @@ if __name__ == '__main__':
     parser.add_argument('-l', '--list',  action='store_true')
     parser.add_argument('-p', '--password',  action='store_true')
     parser.add_argument('-u', '--user',  action='store_true')
+    parser.add_argument('-s', '--set',  action='store_true')
+    parser.add_argument('-r', '--remove',  action='store_true')
     args = parser.parse_args()
 
-    passes = get_passes(*get_env_vars())
+    gpg_home, pass_loc = get_env_vars()
+    gpg = GPG(gnupghome=gpg_home)
+    with open(pass_loc, mode='rb') as f:
+        decoded = gpg.decrypt_file(f, passphrase=getpass())
+    if decoded.data == b'':
+        print("Incorrect Passphrase")
+        exit()
+    passes = loads(clean_gpg_json(decoded.data))
 
     if args.list:
         for key in passes.keys(): print(key)
@@ -68,3 +66,15 @@ if __name__ == '__main__':
             print_pass(passes, args.key)
         if args.user:
             print_user(passes, args.key)
+    if args.set or args.remove:
+        keys = gpg.list_keys()
+        for index, key in enumerate(keys):
+            print(index, key['uids'])
+        fp = keys[int(input('Pick gpg key: '))]['fingerprint']
+        key = input('Specify key: ')
+        if args.set:
+            passes[key] = getpass()
+        else:
+            del passes[key]
+        with open(pass_loc, 'wb') as f:
+            f.write(gpg.encrypt(dumps(passes), fp).data)
