@@ -9,26 +9,47 @@ DESCR = """
 Teensy Password
 by: Marcell Vazquez-Chanlatte, William Kennington III
 """
-EPILOG = """or you know you could take this by hand..."""
+EPILOG = """ """
 
-HELP = {
-    'key': 'Key that the password is stored under.',
-    'list': 'List all stored password.',
-    'pass': 'Return the password.',
-    'user': 'Return the username.',
-    'set': 'Set all fields specified.',
-    'remove': 'Remove specified entry.',
-    'generate': 'specify the length of password to generate.'
+def show(args):
+    """ """
+    raise NotImplementedError
+
+def ls_passwords(args):
+    """ """
+    raise NotImplementedError
+
+def insert(args):
+    """ """
+    raise NotImplementedError
+
+def edit(args):
+    """ """
+    raise NotImplementedError
+
+def generate(args):
+    """ """
+    raise NotImplementedError
+
+COMMANDS = {
+    'show': show,
+    'ls:': ls_passwords,
+    'insert': insert,
+    'edit': edit,
+    'generate': generate,
 }
 
+HELP = {
+    'cmd': ', '.join(COMMANDS.keys()),
+}
+
+def main():
+    """Starts the Teensy CLI"""
+    parser = argparse.ArgumentParser(description=DESCR, epilog=EPILOG)
+    parser.add_argument('cmd', nargs='*', default=['ls'], help=HELP['cmd'])
+    args = parser.parse_args()
+
+    COMMANDS[args.cmd[0]](args)
+
 if __name__ == '__main__':
-    PARSER = argparse.ArgumentParser(description=DESCR, epilog=EPILOG)
-    PARSER.add_argument('-k', '--key', dest='key', type=str, help=HELP['key'])
-    PARSER.add_argument('-l', '--list',  action='store_true', help=HELP['list'])
-    PARSER.add_argument('-u', '--user',  action='store_true', help=HELP['user'])
-    PARSER.add_argument('-p', '--password', action='store_true',
-                        help=HELP['pass'])
-    PARSER.add_argument('-s', '--set',  action='store_true', help=HELP['set'])
-    PARSER.add_argument('-r', '--remove',  action='store_true')
-    PARSER.add_argument('-g', '--generate', type=int, help=HELP['generate'])
-    ARGS = PARSER.parse_args()
+    main()
