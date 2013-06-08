@@ -11,30 +11,42 @@ by: Marcell Vazquez-Chanlatte, William Kennington III
 """
 EPILOG = """ """
 
+
 def show(args):
     """ """
     raise NotImplementedError
 
-def ls_passwords(args):
+
+def ls_pass(args):
     """ """
     raise NotImplementedError
+
 
 def insert(args):
     """ """
     raise NotImplementedError
 
+
+def remove(args):
+    """ """
+    raise NotImplementedError
+
+
 def edit(args):
     """ """
     raise NotImplementedError
+
 
 def generate(args):
     """ """
     raise NotImplementedError
 
+
 COMMANDS = {
     'show': show,
-    'ls:': ls_passwords,
+    'ls:': ls_pass,
     'insert': insert,
+    'rm': remove,
     'edit': edit,
     'generate': generate,
 }
@@ -42,6 +54,7 @@ COMMANDS = {
 HELP = {
     'cmd': ', '.join(COMMANDS.keys()),
 }
+
 
 def main():
     """Starts the Teensy CLI"""
