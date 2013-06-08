@@ -11,48 +11,9 @@ by: Marcell Vazquez-Chanlatte, William Kennington III
 """
 EPILOG = """ """
 
-
-def show(args):
-    """ """
-    raise NotImplementedError
-
-
-def ls_pass(args):
-    """ """
-    raise NotImplementedError
-
-
-def insert(args):
-    """ """
-    raise NotImplementedError
-
-
-def remove(args):
-    """ """
-    raise NotImplementedError
-
-
-def edit(args):
-    """ """
-    raise NotImplementedError
-
-
-def generate(args):
-    """ """
-    raise NotImplementedError
-
-
-COMMANDS = {
-    'show': show,
-    'ls:': ls_pass,
-    'insert': insert,
-    'rm': remove,
-    'edit': edit,
-    'generate': generate,
-}
-
+COMMANDS = {'ls', 'insert', 'rm', 'edit', 'generate', 'show'}
 HELP = {
-    'cmd': ', '.join(COMMANDS.keys()),
+    'cmd': ', '.join(COMMANDS),
 }
 
 
@@ -62,7 +23,13 @@ def main():
     parser.add_argument('cmd', nargs='*', default=['ls'], help=HELP['cmd'])
     args = parser.parse_args()
 
-    COMMANDS[args.cmd[0]](args)
+    # load the correct command based on the the command name
+    if args.cmd[0] not in COMMANDS:
+        print('Invalid command\n')
+        parser.print_help()
+        exit()
+    cmd = getattr(__import__(args.cmd[0], fromlist=[args.cmd[0]]), 'run')
+    cmd(args)
 
 if __name__ == '__main__':
     main()
