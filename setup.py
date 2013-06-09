@@ -11,6 +11,6 @@ setup(
     url='',
     license='LICENSE.txt',
     description='',
-    long_description=open('README.txt').read(),
+    long_description=open('README.org').read(),
     requires = []
 )
