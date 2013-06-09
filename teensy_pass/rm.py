@@ -1,7 +1,7 @@
 """
-Run Command
+Remove command
 """
 
-def run(args):
+def run(parser):
     """ """
     raise NotImplementedError
