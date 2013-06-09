@@ -17,6 +17,7 @@ HELP = {
     'cmd': ', '.join(COMMANDS),
 }
 
+TEENSY_MODULE = 'teensy_pass'
 
 def main():
     """Starts the Teensy CLI"""
@@ -29,7 +30,7 @@ def main():
         parser.print_help()
         exit()
 
-    cmd_name = argv[1]
+    cmd_name = '{0}.{1}'.format(TEENSY_MODULE, argv[1])
     cmd = getattr(__import__(cmd_name, fromlist=[cmd_name]), 'run')
     cmd(parser)
 
