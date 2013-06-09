@@ -4,6 +4,7 @@ Command line interface for Teensy Cli
 """
 
 import argparse
+from sys import argv
 
 DESCR = """
 Teensy Password
@@ -19,17 +20,18 @@ HELP = {
 
 def main():
     """Starts the Teensy CLI"""
-    parser = argparse.ArgumentParser(description=DESCR, epilog=EPILOG)
-    parser.add_argument('cmd', nargs='*', default=['ls'], help=HELP['cmd'])
-    args = parser.parse_args()
+    parser = argparse.ArgumentParser(description=DESCR, epilog=EPILOG,
+                                     add_help=False)
+    parser.add_argument('cmd', nargs=1, default='ls',
+            help=HELP['cmd'])
 
-    # load the correct command based on the the command name
-    if args.cmd[0] not in COMMANDS:
-        print('Invalid command\n')
+    if len(argv) < 2 or argv[1] not in COMMANDS:
         parser.print_help()
         exit()
-    cmd = getattr(__import__(args.cmd[0], fromlist=[args.cmd[0]]), 'run')
-    cmd(args)
+
+    cmd_name = argv[1]
+    cmd = getattr(__import__(cmd_name, fromlist=[cmd_name]), 'run')
+    cmd(parser)
 
 if __name__ == '__main__':
     main()

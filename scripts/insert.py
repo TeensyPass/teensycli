@@ -2,6 +2,6 @@
 Insert Command
 """
 
-def run(args):
+def run(parser):
     """ """
     raise NotImplementedError
