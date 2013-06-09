@@ -14,8 +14,19 @@
 #+LINK_HOME:
 #+XSLT:
 
+* About
+
 * Installation
+  #+BEGIN_EXAMPLE
+  python setup.py install
+  #+END_EXAMPLE
 * Setup Development
   - Setup virtualenv with python2.7 or python3.3
-  -
-*
+  - Install in develop mode
+#+BEGIN_EXAMPLE
+$ virtualenv <path> -p <python>
+$ source <path>/bin/activate
+$ cd <path_to teensy>
+$ python setup.py develop
+#+END_EXAMPLE
+* Contributing
