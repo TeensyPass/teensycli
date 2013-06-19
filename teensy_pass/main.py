@@ -28,11 +28,7 @@ def main():
 
     if len(argv) < 2 or argv[1] not in COMMANDS:
         parser.print_help()
-        exit()
-
-    cmd_name = '{0}.{1}'.format(TEENSY_MODULE, argv[1])
-    cmd = getattr(__import__(cmd_name, fromlist=[cmd_name]), 'run')
-    cmd(parser)
-
-if __name__ == '__main__':
-    main()
+    else:
+        cmd_name = '{0}.{1}'.format(TEENSY_MODULE, argv[1])
+        cmd = getattr(__import__(cmd_name, fromlist=[cmd_name]), 'run')
+        cmd(parser)

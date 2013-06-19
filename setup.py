@@ -7,10 +7,14 @@ setup(
     author='Marcell Vazquez-Chanlatte, William Kennington III',
     author_email='mvc@linux.com',
     packages=find_packages(),
-    scripts=['scripts/teensy_lock.py'],
     url='',
     license='LICENSE.txt',
     description='',
     long_description=open('README.org').read(),
-    requires = []
+    requires = [],
+    entry_points={
+        'console_scripts': [
+            'pass2 = teensy_pass.main:main',
+        ]
+    }
 )
