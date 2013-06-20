@@ -15,7 +15,6 @@ def generate_pass(length, no_symbols=False):
 
 def run(parent):
     """Generates a password"""
-
     parser = argparse.ArgumentParser(parents=[parent])
     parser.add_argument('length', type=int)
     parser.add_argument('-n', '--no-symbols', dest='no_symbols',
