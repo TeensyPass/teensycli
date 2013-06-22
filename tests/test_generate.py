@@ -2,7 +2,6 @@
 Tests the password generation system
 """
 from teensy_pass.generate import generate_pass
-
 from string import punctuation
 
 def test_generate_pass():

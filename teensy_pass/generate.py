@@ -13,11 +13,11 @@ def generate_pass(length, no_symbols=False):
     return ''.join(choice(chars) for _ in range(length))
 
 
-def run(parent):
+def run(parents):
     """Generates a password"""
-    parser = argparse.ArgumentParser(parents=[parent])
+    parser = argparse.ArgumentParser(parents=parents)
     parser.add_argument('length', type=int)
     parser.add_argument('-n', '--no-symbols', dest='no_symbols',
                         action='store_true')
     args = parser.parse_args()
-    print(generate_pass(args.length, args.no_symbols))
+    return generate_pass(args.length, args.no_symbols)

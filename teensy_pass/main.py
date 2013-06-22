@@ -20,9 +20,9 @@ HELP = {
 }
 
 TEENSY_MODULE = 'teensy_pass'
-KEY = 'mvc@linux.com'
+
 try:
-    HOME= environ['PASS_HOME']
+    HOME = environ['PASS_HOME']
 except KeyError:
     HOME = getcwd()
 try:
@@ -30,17 +30,18 @@ try:
 except KeyError:
     KEY = None
 
+PARSER = argparse.ArgumentParser(description=DESCR, epilog=EPILOG,
+                                 add_help=False)
+PARSER.add_argument('cmd', nargs=1, default='ls', help=HELP['cmd'])
+PARSER.add_argument('-k', '--key', default=KEY, required=KEY is None,
+                    help=HELP['key'])
+
+
 def main():
     """Starts the Teensy CLI"""
-    parser = argparse.ArgumentParser(description=DESCR, epilog=EPILOG,
-                                     add_help=False)
-    parser.add_argument('cmd', nargs=1, default='ls', help=HELP['cmd'])
-    parser.add_argument('-k', '--key', default=KEY, required=KEY is None,
-                        help=HELP['key'])
-
     if len(argv) < 2 or argv[1] not in COMMANDS:
-        parser.print_help()
+        PARSER.print_help()
     else:
         cmd_name = '{0}.{1}'.format(TEENSY_MODULE, argv[1])
         cmd = getattr(__import__(cmd_name, fromlist=[cmd_name]), 'run')
-        cmd(parser)
+        print(cmd([PARSER]))
