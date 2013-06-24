@@ -1,9 +1,11 @@
 """
 Wrapper for the data
 """
-from os.path import join
+from os import walk
+from os.path import join, relpath
 from subprocess import check_output
 from json import dumps, loads
+from itertools import chain
 
 from ..main import HOME
 
@@ -26,3 +28,11 @@ def load(fname, home=HOME):
     """
     cmd = 'gpg --quiet --no-tty --decrypt {0}'.format(join(home, fname))
     return loads(check_output(cmd, shell=True).decode('utf-8'))
+
+def list_db(home=HOME):
+    """Lists all known passwords
+    - home: Base path of the file
+    """
+    pass_name = lambda base, name: relpath(join(base, name), HOME)
+    return '\n'.join(('\n'.join((pass_name(base, name) for name in names))
+                      for base, _, names in walk(home)))

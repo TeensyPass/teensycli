@@ -16,6 +16,9 @@
 
 * About
 
+* Requirements
+  - python2.7 or python3
+  - gpg
 * Installation
   #+BEGIN_EXAMPLE
   python setup.py install
