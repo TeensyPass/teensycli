@@ -1,9 +1,8 @@
 """
 Insert Command
 """
-import argparse
-import sys
 from .data.gpg_data import save
+from .main import child_parser
 
 DOCS = {
     'name': '',
@@ -11,13 +10,8 @@ DOCS = {
     'password': '',
 }
 
-
-def run(parents, argv=sys.argv):
+@child_parser(DOCS)
+def run(args):
     """Inserts password into the password infrastructure"""
-    parser = argparse.ArgumentParser(parents=parents)
-    for opt in DOCS.keys():
-        parser.add_argument('-{0}'.format(opt[0]), '--{0}'.format(opt),
-                            required=True, help=DOCS[opt])
-    args = parser.parse_args(argv)
     save(args.name, {'user': args.user, 'password': args.password}, args.key)
     return 'Saved'

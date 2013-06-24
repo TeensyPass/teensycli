@@ -19,7 +19,6 @@ def save(fname, data, key, home=HOME):
     with open(join(home, fname), 'wb') as filep:
         filep.write(check_output(cmd, shell=True))
 
-
 def load(fname, home=HOME):
     """Loads the data in fname using pgp to decrypt it.
     - fname: Name of the file to load data from
