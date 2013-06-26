@@ -4,7 +4,7 @@ Command line interface for Teensy Cli
 """
 
 import argparse
-from sys import argv
+import sys
 from os import environ, getcwd
 from functools import wraps
 
@@ -41,7 +41,7 @@ def child_parser(docs):
     """Builds a child parser based on documentation dictionary"""
     def _child_parser(func):
         @wraps(func)
-        def __child_parser(parents, argv=argv[1:]):
+        def __child_parser(parents, argv=sys.argv[1:]):
             parser = argparse.ArgumentParser(parents=parents, add_help=False)
             for opt in docs.keys():
                 parser.add_argument('-{0}'.format(opt[0]), '--{0}'.format(opt),
@@ -53,7 +53,7 @@ def child_parser(docs):
 
 def main():
     """Starts the Teensy CLI"""
-    args = PARSER.parse_args(argv[1:NARGS])
+    args = PARSER.parse_args(sys.argv[1:NARGS])
     cmd_name = '{0}.{1}'.format(TEENSY_MODULE, args.cmd)
     cmd = getattr(__import__(cmd_name, fromlist=[cmd_name]), 'run')
     print(cmd([PARSER]))

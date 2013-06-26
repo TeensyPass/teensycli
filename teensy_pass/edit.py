@@ -3,12 +3,7 @@ Edit Command
 """
 from .data.gpg_data import save, load
 from .main import child_parser
-
-DOCS = {
-    'name': '',
-    'user': '',
-    'password': '',
-}
+from .insert import DOCS
 
 @child_parser(DOCS)
 def run(args):
